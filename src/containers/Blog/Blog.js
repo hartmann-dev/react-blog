@@ -1,6 +1,4 @@
-import React, {
-  Component
-} from "react";
+import React, { Component } from "react";
 //import axios from "axios";
 import axios from "../../axios";
 
@@ -17,25 +15,27 @@ class Blog extends Component {
   };
 
   componentDidMount() {
-    axios.get("/posts").then(response => {
-      const posts = response.data.slice(0, 4);
-      const updatedPosts = posts.map(post => {
-        return {
-          ...post,
-          author: "Max"
-        };
+    axios
+      .get("/posts")
+      .then(response => {
+        const posts = response.data.slice(0, 4);
+        const updatedPosts = posts.map(post => {
+          return {
+            ...post,
+            author: "Max"
+          };
+        });
+        this.setState({
+          posts: updatedPosts
+        });
+        //console.log(response);
+      })
+      .catch(error => {
+        //console.log(error);
+        this.setState({
+          error: true
+        });
       });
-      this.setState({
-        posts: updatedPosts
-      });
-      //console.log(response);
-    }).catch(error => {
-      //console.log(error);
-      this.setState({
-        error: true
-      });
-
-    });
   }
 
   postSelectedHandler = id => {
@@ -45,24 +45,36 @@ class Blog extends Component {
   };
 
   render() {
-    let posts = <p style={{ textAlign: "center" }}> Da lief wohl etwas schief </p>
+    let posts = (
+      <p style={{ textAlign: "center" }}> Da lief wohl etwas schief </p>
+    );
     if (!this.state.error) {
       posts = this.state.posts.map(post => {
-        return (<Post
-          key={post.id}
-          title={post.title}
-          author={post.author}
-          clicked={
-            () => this.postSelectedHandler(post.id)
-          }
-        />
+        return (
+          <Post
+            key={post.id}
+            title={post.title}
+            author={post.author}
+            clicked={() => this.postSelectedHandler(post.id)}
+          />
         );
       });
-
     }
 
     return (
-      <div>
+      <div className="Blog">
+        <header>
+          <nav>
+            <ul>
+              <li>
+                <a href="/">Home</a>
+              </li>
+              <li>
+                <a href="/new-post">New Post</a>
+              </li>
+            </ul>
+          </nav>
+        </header>
         <section className="Posts"> {posts} </section>
         <section>
           <FullPost id={this.state.seleectedPostId} />
