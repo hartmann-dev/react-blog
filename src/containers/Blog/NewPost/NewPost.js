@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 import axios from "axios";
 
 import "./NewPost.css";
@@ -27,13 +27,15 @@ class NewPost extends Component {
   };
 
   render() {
-    let redirect = null;
+    // let redirect = null;
     if (this.state.submitted) {
-      redirect = <Redirect to="/posts" />;
+      //replace verhindert reload mit backbutton
+      this.props.history.replace("/posts");
+      //redirect = <Redirect to="/posts" />;
     }
 
     return (<div className="NewPost">
-      {redirect}
+      {/* {redirect} */}
 
       <h1> Add a Post </h1>
       <label> Title </label>
